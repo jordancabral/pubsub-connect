@@ -1,0 +1,43 @@
+services:    
+    pubsub:
+        image: singularities/pubsub-emulator
+        environment:
+        - PUBSUB_PROJECT_ID=pubsub-connect
+        - PUBSUB_LISTEN_ADDRESS=0.0.0.0:8085
+    pubsub-init:
+        image: martynas/gcloud-pubsub-client
+        depends_on:
+            - pubsub
+        environment:
+            - PUBSUB_PROJECT_ID=pubsub-connect
+            - PUBSUB_EMULATOR_HOST=pubsub:8085
+        entrypoint: ["/bin/sh","-c"]
+        command:
+        - |
+            python publisher.py pubsub-connect create testTopic
+            python subscriber.py pubsub-connect create testTopic testSubscription
+            python publisher.py pubsub-connect publish testTopic
+    mongo:
+        image: mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+    test-api:
+        image: inanimate/echo-server
+    pubsub-connect:
+        build: .
+        environment:
+            - PUBSUB_EMULATOR_HOST=pubsub:8085
+            - GCP_PROJECT_ID=pubsub-connect
+            - GCP_PUBSUB_SUBSCRIPTION=testSubscription
+            # - GCP_CREDENTIALS=saraza
+            - MONGO_DB_URI=mongodb://mongo:27017
+            - MONGO_DB_USER=root
+            - MONGO_DB_PASS=example
+            - API_URL=http://test-api:8080
+            - REPOSITORY=api
+        restart: always
+        depends_on:
+            - pubsub
+            - pubsub-init
+            - mongo
