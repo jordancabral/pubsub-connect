@@ -3,12 +3,10 @@ package mongo
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -20,10 +18,7 @@ var (
 )
 
 func init() {
-	_err := godotenv.Load()
-	if _err != nil {
-		fmt.Println("Warning: cant load .env file: " + _err.Error())
-	}
+
 	// TODO: No esta bueno que se intancie solo por la config de env.
 	if os.Getenv("REPOSITORY") == "mongo" {
 		mongoURL = os.Getenv("MONGO_DB_URI")

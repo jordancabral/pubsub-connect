@@ -17,11 +17,11 @@ services:
             python publisher.py pubsub-connect create testTopic
             python subscriber.py pubsub-connect create testTopic testSubscription
             python publisher.py pubsub-connect publish testTopic
-    mongo:
-        image: mongo
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: example
+    # mongo:
+    #     image: mongo
+    #     environment:
+    #         MONGO_INITDB_ROOT_USERNAME: root
+    #         MONGO_INITDB_ROOT_PASSWORD: example
     test-api:
         image: inanimate/echo-server
     pubsub-connect:
@@ -31,7 +31,7 @@ services:
             - GCP_PROJECT_ID=pubsub-connect
             - GCP_PUBSUB_SUBSCRIPTION=testSubscription
             # - GCP_CREDENTIALS=saraza
-            - MONGO_DB_URI=mongodb://mongo:27017
+            # - MONGO_DB_URI=mongodb://mongo:27017
             - MONGO_DB_USER=root
             - MONGO_DB_PASS=example
             - API_URL=http://test-api:8080
@@ -40,4 +40,4 @@ services:
         depends_on:
             - pubsub
             - pubsub-init
-            - mongo
+            # - mongo

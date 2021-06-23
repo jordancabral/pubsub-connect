@@ -7,7 +7,7 @@ This service read messages from PubSub and send them to different configurable r
 GCP_PROJECT_ID
 GCP_PUBSUB_SUBSCRIPTION
 GCP_CREDENTIALS
-REPOSITORY (Where de events will be sent mongo|rabbit|api)
+REPOSITORY (Where de events will be sent mongo|api)
 MONGO_DB_URI (Mongo URL)
 MONGO_DB_USER (Mongo user)
 MONGO_DB_PASS (Mongo pass)

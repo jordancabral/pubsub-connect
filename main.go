@@ -5,10 +5,17 @@ import (
 	"net/http"
 
 	"pubsub-connect/consumer"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	fmt.Println("Starting...")
+
+	_err := godotenv.Load()
+	if _err != nil {
+		fmt.Println("Warning: cant load .env file: " + _err.Error())
+	}
 
 	// Start consumer
 	consumerFail := false
